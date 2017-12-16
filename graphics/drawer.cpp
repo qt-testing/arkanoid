@@ -6,7 +6,7 @@ Drawer::Drawer(QWidget *parent)
 {
 	m_pArkanoid = 0;
 
-	connect(&m_timer, SIGNAL(timeout),
+	connect(&m_timer, SIGNAL(timeout()),
 			SLOT(repaint()));
 }
 

@@ -9,9 +9,6 @@ ArkWidget::ArkWidget(QWidget *parent)
 {
 	m_boxPen.setWidth(5);
 	m_boxPen.setColor(QColor(255, 0, 0));
-
-	connect(&m_timer, SIGNAL(timeout()),
-			SLOT(repaint()));
 }
 
 ArkWidget::~ArkWidget()
