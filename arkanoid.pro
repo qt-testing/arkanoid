@@ -1,10 +1,11 @@
 QT += widgets
 
-CONFIG += release
+CONFIG += debug
 
 SOURCES += control/control.cpp \
            gameplay/animation.cpp \
            gameplay/arkanoid.cpp \
+           gameplay/ballboxitem.cpp \
            gameplay/box.cpp \
            gameplay/boxitem.cpp \
            gameplay/padboxitem.cpp \
@@ -16,6 +17,7 @@ SOURCES += control/control.cpp \
 HEADERS += control/control.h \
            gameplay/animation.h \
            gameplay/arkanoid.h \
+           gameplay/ballboxitem.h \
            gameplay/box.h \
            gameplay/boxitem.h \
            gameplay/padboxitem.h \

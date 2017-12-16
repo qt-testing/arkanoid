@@ -30,10 +30,13 @@ public:
 	void move(int dx, int dy);
 	void move();
 
+	ItemType type() const;
+
 protected:
 	QRect m_rect;
 	QPoint m_position;
 	QPoint m_velocity;
+	ItemType m_type;
 };
 
 #endif // ARKANOID_BOXITEM_H

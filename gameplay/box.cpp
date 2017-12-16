@@ -1,4 +1,5 @@
 #include "box.h"
+#include "ballboxitem.h"
 #include "padboxitem.h"
 
 /*------- Box -------------------------------------------*/
@@ -43,6 +44,8 @@ BoxItem *Box::appendItem(BoxItem::ItemType type)
 
 	if (type == BoxItem::Pad) {
 		item = new PadBoxItem();
+	} else if (type == BoxItem::Ball) {
+		item = new BallBoxItem();
 	}
 
 	m_items.insertMulti(type, item);

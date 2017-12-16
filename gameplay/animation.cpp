@@ -36,16 +36,23 @@ void Animation::stop()
 	m_timer.stop();
 }
 
+bool Animation::isActive() const
+{
+	return m_timer.isActive();
+}
+
 void Animation::animate()
 {
+	int boxWidth = m_pBox->rect().width();
+	int boxHeight = m_pBox->rect().height();
+
 	if (m_pControl->actionState(ArkanoidNamespace::ControlActionRight)) {
 		QList<BoxItem *> items = m_pBox->items(BoxItem::Pad);
 		foreach (BoxItem *item, items) {
-			int boxRightSidePos = m_pBox->rect().right();
 			int padWidth = item->rect().width();
 
-			if (item->position().x() + padWidth >= boxRightSidePos) {
-				item->setPosition(QPoint(boxRightSidePos - padWidth, item->position().y()));
+			if (item->position().x() + padWidth >= boxWidth) {
+				item->setPosition(QPoint(boxWidth - padWidth, item->position().y()));
 			} else {
 				item->move(abs(item->velocity().x()), item->velocity().y());
 			}
@@ -53,13 +60,39 @@ void Animation::animate()
 	} else if (m_pControl->actionState(ArkanoidNamespace::ControlActionLeft)) {
 		QList<BoxItem *> items = m_pBox->items(BoxItem::Pad);
 		foreach (BoxItem *item, items) {
-			int boxLeftSidePos = m_pBox->rect().left();
-
-			if (item->position().x() <= boxLeftSidePos) {
-				item->setPosition(QPoint(boxLeftSidePos, item->position().y()));
+			if (item->position().x() <= 0) {
+				item->setPosition(QPoint(0, item->position().y()));
+			} else {
+				item->move(-abs(item->velocity().x()), item->velocity().y());
 			}
-
-			item->move(-abs(item->velocity().x()), item->velocity().y());
 		}
+	}
+
+	QList<BoxItem *> items = m_pBox->items(BoxItem::Ball);
+	foreach (BoxItem *item, items) {
+		QPoint pos = item->position();
+		int ballSize = item->rect().width();
+
+		if (pos.y() >= boxHeight - ballSize) {
+			item->setPosition(QPoint(pos.x(), boxHeight - ballSize));
+			item->setVelocity(QPoint(item->velocity().x(), -abs(item->velocity().y())));
+		}
+
+		if (pos.y() <= 0) {
+			item->setPosition(QPoint(pos.x(), 0));
+			item->setVelocity(QPoint(item->velocity().x(), abs(item->velocity().y())));
+		}
+
+		if (pos.x() >= boxWidth - ballSize) {
+			item->setPosition(QPoint(boxWidth - ballSize, pos.y()));
+			item->setVelocity(QPoint(-abs(item->velocity().x()), item->velocity().y()));
+		}
+
+		if (pos.x() <= 0) {
+			item->setPosition(QPoint(0, pos.y()));
+			item->setVelocity(QPoint(abs(item->velocity().x()), item->velocity().y()));
+		}
+
+		item->move();
 	}
 }

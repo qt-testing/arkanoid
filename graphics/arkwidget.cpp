@@ -51,11 +51,18 @@ void ArkWidget::paintEvent(QPaintEvent *event)
 		painter.drawLine(r.topLeft(), r.topRight());
 	}
 
-	QList<BoxItem *> pads = box.items(BoxItem::Pad);
+	QMap<BoxItem::ItemType, BoxItem *> items = box.items();
 
-	foreach (BoxItem *item, pads) {
+	foreach (BoxItem *item, items) {
+		BoxItem::ItemType type = item->type();
+
 		QRect r = item->rect();
 		r.moveTo(item->position());
-		painter.drawRect(r);
+
+		if (type == BoxItem::Pad) {
+			painter.drawRect(r);
+		} else if (type == BoxItem::Ball) {
+			painter.drawEllipse(r);
+		}
 	}
 }

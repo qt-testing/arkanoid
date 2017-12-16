@@ -3,6 +3,7 @@
 /*------- BoxItem ---------------------------------------*/
 BoxItem::BoxItem()
 {
+	m_type = ItemTypeNotDedined;
 }
 
 BoxItem::~BoxItem()
@@ -37,6 +38,11 @@ void BoxItem::move(int dx, int dy)
 void BoxItem::move()
 {
 	m_position += m_velocity;
+}
+
+BoxItem::ItemType BoxItem::type() const
+{
+	return m_type;
 }
 
 void BoxItem::setVelocity(QPoint velocity)

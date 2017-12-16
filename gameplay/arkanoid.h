@@ -15,6 +15,9 @@ public:
 	Arkanoid(QObject *parent = 0);
 	~Arkanoid();
 
+	void start();
+	void stop();
+
 	void setGeometry(const QRect &r);
 
 	const Box &box() const;

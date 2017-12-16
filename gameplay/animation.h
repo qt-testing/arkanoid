@@ -21,6 +21,8 @@ public:
 	void start();
 	void stop();
 
+	bool isActive() const;
+
 private slots:
 	void animate();
 
