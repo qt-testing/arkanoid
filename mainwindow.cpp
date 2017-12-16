@@ -37,6 +37,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 		} else {
 			showFullScreen();
 		}
+	} else if (event->key() == Qt::Key_S &&
+			   event->modifiers() & Qt::ControlModifier) {
+		m_arkanoid.start();
 	} else if (event->key() == Qt::Key_Right && !event->isAutoRepeat()) {
 		control.move(ArkanoidNamespace::ControlActionRight);
 	} else if (event->key() == Qt::Key_Left) {
@@ -72,5 +75,5 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
 	QMainWindow::resizeEvent(event);
 
-	m_arkanoid.setGeometry(centralWidget()->geometry());
+	m_arkanoid.setGeometry(centralWidget()->rect());
 }
