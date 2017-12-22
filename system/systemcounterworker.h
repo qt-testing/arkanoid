@@ -1,7 +1,6 @@
 #ifndef ARKANOID_SYSTEMCOUNTERWORKER_H
 #define ARKANOID_SYSTEMCOUNTERWORKER_H
 
-#include "systemcounter.h"
 #include <QMap>
 #include <QTimer>
 #include <QVector>
