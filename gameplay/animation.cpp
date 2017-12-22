@@ -1,5 +1,6 @@
 #include "animation.h"
 #include "box.h"
+#include "math.h"
 #include "padboxitem.h"
 #include <control.h>
 #include <systemcounter.h>
@@ -87,7 +88,32 @@ void Animation::animate()
 		QPoint velocity = item->velocity();
 
 		curPos = item->position();
-		nextPos = (curPos += item->velocity());
+		nextPos = curPos;
+		nextPos += velocity;
+
+		QList<BoxItem *> pads = m_pBox->items(BoxItem::Pad);
+		foreach (BoxItem *pad, pads) {
+			int y = pad->rect().bottom();
+
+			if (nextPos.y() < y && curPos.y() >= y) {
+				float x1 = (float)curPos.x();
+				float y1 = (float)curPos.y();
+				float x2 = (float)nextPos.x();
+				float y2 = (float)nextPos.y();
+
+				float crossX = x1 + (x2 - x1) * fabs((float)y - y1) / fabs(y2 - y1);
+
+				if (crossX >= pad->position().x() &&
+					crossX <= pad->position().x() + pad->rect().width()) {
+					nextPos.setY(y + (abs(velocity.y()) - (y - curPos.y())));
+					velocity.setY(abs(velocity.y()));
+
+					item->setVelocity(velocity);
+					item->setPosition(nextPos);
+				}
+
+			}
+		}
 
 		if (nextPos.x() >= boxWidth - ballSize) {
 			int xdif = nextPos.x() - (boxWidth - ballSize);
