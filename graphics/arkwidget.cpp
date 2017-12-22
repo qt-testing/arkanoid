@@ -1,6 +1,8 @@
 #include "arkwidget.h"
 #include <arkanoid.h>
 #include <padboxitem.h>
+#include <systemcounter.h>
+#include <QElapsedTimer>
 #include <QtGui/QPainter>
 
 /*------- ArkWidget -------------------------------------*/
@@ -22,6 +24,9 @@ void ArkWidget::paintEvent(QPaintEvent *event)
 	if (!m_pArkanoid) {
 		return;
 	}
+
+	QElapsedTimer timer;
+	timer.start();
 
 	QPainter painter(this);
 
@@ -65,4 +70,6 @@ void ArkWidget::paintEvent(QPaintEvent *event)
 			painter.drawEllipse(r);
 		}
 	}
+
+	SystemCounter::instance()->appendTime("ArkWidget::paintEvent", timer.nsecsElapsed());
 }

@@ -1,8 +1,9 @@
 #include "animation.h"
 #include "box.h"
 #include "padboxitem.h"
-// #include <cmath>
 #include <control.h>
+#include <systemcounter.h>
+#include <QElapsedTimer>
 
 /*------- Animation -------------------------------------*/
 Animation::Animation(QObject *parent)
@@ -43,6 +44,9 @@ bool Animation::isActive() const
 
 void Animation::animate()
 {
+	QElapsedTimer timer;
+	timer.start();
+
 	int boxWidth = m_pBox->rect().width();
 	int boxHeight = m_pBox->rect().height();
 
@@ -73,16 +77,6 @@ void Animation::animate()
 		QPoint pos = item->position();
 		int ballSize = item->rect().width();
 
-		if (pos.y() >= boxHeight - ballSize) {
-			item->setPosition(QPoint(pos.x(), boxHeight - ballSize));
-			item->setVelocity(QPoint(item->velocity().x(), -abs(item->velocity().y())));
-		}
-
-		if (pos.y() <= 0) {
-			item->setPosition(QPoint(pos.x(), 0));
-			item->setVelocity(QPoint(item->velocity().x(), abs(item->velocity().y())));
-		}
-
 		if (pos.x() >= boxWidth - ballSize) {
 			item->setPosition(QPoint(boxWidth - ballSize, pos.y()));
 			item->setVelocity(QPoint(-abs(item->velocity().x()), item->velocity().y()));
@@ -93,6 +87,18 @@ void Animation::animate()
 			item->setVelocity(QPoint(abs(item->velocity().x()), item->velocity().y()));
 		}
 
+		if (pos.y() >= boxHeight - ballSize) {
+			item->setPosition(QPoint(pos.x(), boxHeight - ballSize));
+			item->setVelocity(QPoint(item->velocity().x(), -abs(item->velocity().y())));
+		}
+
+		if (pos.y() <= 0) {
+			item->setPosition(QPoint(pos.x(), 0));
+			item->setVelocity(QPoint(item->velocity().x(), abs(item->velocity().y())));
+		}
+
 		item->move();
 	}
+
+	SystemCounter::instance()->appendTime("Animation::animate", timer.nsecsElapsed());
 }
